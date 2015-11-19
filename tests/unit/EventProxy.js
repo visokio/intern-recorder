@@ -150,7 +150,7 @@ define(function (require) {
 				}
 			},
 
-			'#getElementTextPath': function () {
+			'#getElementTextPathInfo': function () {
 				var element = {
 					nodeName: 'BODY',
 					parentNode: document.documentElement,
@@ -162,7 +162,7 @@ define(function (require) {
 				};
 
 				assert.strictEqual(
-					eventProxy.getElementTextPath(element),
+					eventProxy.getElementTextPathInfo(element).path,
 					'/HTML/BODY[1][normalize-space(string())="Hello, world"]'
 				);
 
@@ -177,12 +177,12 @@ define(function (require) {
 				};
 
 				assert.strictEqual(
-					eventProxy.getElementTextPath(element),
+					eventProxy.getElementTextPathInfo(element).path,
 					'//SINGLE[normalize-space(string())="Hello, world"]'
 				);
 			},
 
-			'#getElementXPath': function () {
+			'#getElementXPathInfo': function () {
 				var body = {
 					nodeName: 'BODY',
 					parentNode: document.documentElement,
@@ -201,7 +201,7 @@ define(function (require) {
 					}
 				};
 
-				assert.strictEqual(eventProxy.getElementXPath(element), '/HTML/BODY[1]/DIV[2]');
+				assert.strictEqual(eventProxy.getElementXPathInfo(element).path, '/HTML/BODY[1]/DIV[2]');
 
 				element = {
 					id: 'test',
@@ -209,8 +209,8 @@ define(function (require) {
 					parentNode: body
 				};
 
-				assert.strictEqual(eventProxy.getElementXPath(element), 'id("test")');
-				assert.strictEqual(eventProxy.getElementXPath(element, true), '/HTML/BODY[1]/DIV');
+				assert.strictEqual(eventProxy.getElementXPathInfo(element).path, 'id("test")');
+				assert.strictEqual(eventProxy.getElementXPathInfo(element, true).path, '/HTML/BODY[1]/DIV');
 			},
 
 			'click event': function () {
@@ -247,10 +247,10 @@ define(function (require) {
 				}, 'Invalid strategy');
 
 				eventProxy.setStrategy('xpath');
-				assert.strictEqual(eventProxy.getTarget, eventProxy.getElementXPath);
+				assert.strictEqual(eventProxy.getTargetInfo, eventProxy.getElementXPathInfo);
 
 				eventProxy.setStrategy('text');
-				assert.strictEqual(eventProxy.getTarget, eventProxy.getElementTextPath);
+				assert.strictEqual(eventProxy.getTargetInfo, eventProxy.getElementTextPathInfo);
 			}
 		};
 	});
